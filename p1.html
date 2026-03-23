@@ -14,22 +14,6 @@
             <div class="question-content">
                 <h2>🚨 P1 - Critical Priority Ticket</h2>
                 
-                <!-- Ticket Actions Section -->
-                <div class="ticket-actions">
-                    <h3>Quick Actions</h3>
-                    <div class="action-buttons">
-                        <button onclick="openTicketModal('feature')" class="action-btn feature">
-                            🚀 Feature Request
-                        </button>
-                        <button onclick="openTicketModal('bug')" class="action-btn bug">
-                            🐛 Bug Report
-                        </button>
-                        <button onclick="openTicketModal('sre')" class="action-btn sre">
-                            ⚙️ SRE Ticket
-                        </button>
-                    </div>
-                </div>
-                
                 <div class="question-text" id="questionText">
                     Loading question...
                 </div>
@@ -44,6 +28,22 @@
                         <button type="button" onclick="location.href='index.html'" class="btn btn-back">Back to Dashboard</button>
                     </div>
                 </form>
+                
+                <!-- Ticket Actions Section - Hidden initially -->
+                <div class="ticket-actions" style="display: none;">
+                    <h3>🎯 Great job! Now you can create additional tickets:</h3>
+                    <div class="action-buttons">
+                        <button onclick="openTicketModal('feature')" class="action-btn feature">
+                            🚀 Feature Request
+                        </button>
+                        <button onclick="openTicketModal('bug')" class="action-btn bug">
+                            🐛 Bug Report
+                        </button>
+                        <button onclick="openTicketModal('sre')" class="action-btn sre">
+                            ⚙️ SRE Ticket
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -118,10 +118,14 @@
             const description = document.getElementById('ticketDescription').value;
             const priority = document.getElementById('ticketPriority').value;
             
-            alert(`${type.toUpperCase()} ticket created successfully!
-
-Title: ${title}
-Priority: ${priority}\nDescription: ${description}`);
+            // Show success message with ticket details
+            const ticketId = 'TKT-' + Date.now().toString().slice(-6);
+            alert(`✅ ${type.toUpperCase()} ticket created successfully!\n\n` +
+                  `Ticket ID: ${ticketId}\n` +
+                  `Title: ${title}\n` +
+                  `Priority: ${priority}\n` +
+                  `Description: ${description}\n\n` +
+                  `Your ticket has been submitted to the appropriate team.`);
             closeTicketModal();
         });
 
