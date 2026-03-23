@@ -1,455 +1,160 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ... (keep all existing styles) ... */
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 40px;
-    color: white;
-}
-
-header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
-
-.ticket-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    flex: 1;
-    align-content: start;
-}
-
-.ticket-card {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.ticket-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-}
-
-.priority-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px 20px;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border-bottom-left-radius: 15px;
-}
-
-.p1 .priority-badge {
-    background: #e74c3c;
-}
-
-.p2 .priority-badge {
-    background: #f39c12;
-}
-
-.p3 .priority-badge {
-    background: #3498db;
-}
-
-.p4 .priority-badge {
-    background: #27ae60;
-}
-
-.ticket-card h3 {
-    margin: 20px 0 15px 0;
-    font-size: 1.5rem;
-    color: #2c3e50;
-}
-
-.description {
-    color: #7f8c8d;
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
-.time-limit {
-    color: #e67e22;
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-}
-
-.answer-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.answer-btn:hover {
-    background: linear-gradient(45deg, #764ba2, #667eea);
-    transform: scale(1.05);
-}
-
-/* Modal Styles */
-.modal {
+/* Success Modal Styles */
+.success-modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.8);
+    animation: fadeIn 0.3s ease-in;
 }
 
-.modal-content {
-    background-color: white;
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #000;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    color: white;
-    opacity: 0.8;
-}
-
-/* Question Page Styles */
-.question-container {
-    background: white;
-    border-radius: 15px;
+.success-modal-content {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    margin: 10% auto;
     padding: 40px;
-    margin: 20px auto;
-    max-width: 900px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    text-align: center;
+    color: white;
 }
 
-.timer {
-    text-align: center;
+.success-header {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.success-title {
     font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-}
-
-.timer.warning {
-    background: #e74c3c;
-    animation: pulse 1s infinite;
-}
-
-.timer.normal {
-    background: #27ae60;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-.question-content h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-.question-text {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    border-left: 5px solid #3498db;
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-/* Ticket Actions in Question Pages */
-.ticket-actions {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    border: 2px solid #e9ecef;
-}
-
-.ticket-actions h3 {
-    color: #2c3e50;
     margin-bottom: 15px;
-    font-size: 1.2rem;
-    text-align: center;
+    font-weight: bold;
 }
 
-.action-buttons {
+.success-message {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.success-actions {
+    margin-top: 30px;
+}
+
+.success-actions h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.success-action-buttons {
     display: flex;
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
-}
-
-.action-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-    min-width: 120px;
-}
-
-.action-btn.feature {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-}
-
-.action-btn.bug {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
-}
-
-.action-btn.sre {
-    background: linear-gradient(45deg, #f39c12, #e67e22);
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-/* Radio Button Styles */
-.answer-options {
     margin-bottom: 30px;
 }
 
-.option {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.option:hover {
-    border-color: #3498db;
-    background: #e3f2fd;
-}
-
-.option input[type="radio"] {
-    margin-right: 15px;
-    transform: scale(1.2);
-}
-
-.option label {
-    cursor: pointer;
-    flex: 1;
-    font-size: 1rem;
-    line-height: 1.4;
-}
-
-.option.correct {
-    border-color: #27ae60;
-    background: #d5f4e6;
-}
-
-.option.incorrect {
-    border-color: #e74c3c;
-    background: #fdeaea;
-}
-
-.result-message {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.result-message.correct {
-    background: #d5f4e6;
-    color: #27ae60;
-    border: 2px solid #27ae60;
-}
-
-.result-message.incorrect {
-    background: #fdeaea;
-    color: #e74c3c;
-    border: 2px solid #e74c3c;
-}
-
-.explanation {
-    background: #e8f4fd;
-    border: 1px solid #3498db;
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
-    font-style: italic;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 15px 30px;
+.success-action-btn {
+    padding: 15px 25px;
     border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.success-action-btn.feature {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+}
+
+.success-action-btn.bug {
+    background: linear-gradient(45deg, #FF5722, #D84315);
+}
+
+.success-action-btn.sre {
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+}
+
+.success-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.success-close-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 12px 30px;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.btn-submit {
-    background: #27ae60;
-    color: white;
+.success-close-btn:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
 }
 
-.btn-submit:hover:not(:disabled) {
-    background: #2ecc71;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.btn-submit:disabled {
-    background: #95a5a6;
-    cursor: not-allowed;
+@keyframes celebrationBounce {
+    0% { 
+        transform: scale(0.3) translateY(-100px);
+        opacity: 0;
+    }
+    50% { 
+        transform: scale(1.05) translateY(0);
+        opacity: 1;
+    }
+    70% { 
+        transform: scale(0.95);
+    }
+    100% { 
+        transform: scale(1);
+    }
 }
 
-.btn-back {
-    background: #95a5a6;
-    color: white;
-}
-
-.btn-back:hover {
-    background: #7f8c8d;
-}
-
-.time-up {
-    text-align: center;
-    color: #e74c3c;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
+/* Responsive design for success modal */
 @media (max-width: 768px) {
-    .ticket-grid {
-        grid-template-columns: 1fr;
+    .success-modal-content {
+        margin: 5% auto;
+        padding: 30px 20px;
+        width: 95%;
     }
     
-    .action-buttons {
+    .success-header {
+        font-size: 2rem;
+    }
+    
+    .success-title {
+        font-size: 1.5rem;
+    }
+    
+    .success-action-buttons {
         flex-direction: column;
         align-items: center;
     }
     
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    .question-container {
-        margin: 10px;
-        padding: 20px;
-    }
-    
-    .button-group {
-        flex-direction: column;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 20px;
+    .success-action-btn {
+        width: 100%;
+        max-width: 250px;
     }
 }
