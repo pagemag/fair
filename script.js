@@ -216,7 +216,7 @@ function loadQuestion(priority) {
         });
     }
     
-    console.log('Question loaded:', currentQuestionData); // Debug log
+    console.log('Question loaded:', currentQuestionData);
 }
 
 function initializeQuestionPage(duration, priority) {
@@ -224,19 +224,12 @@ function initializeQuestionPage(duration, priority) {
     const submitBtn = document.getElementById('submitBtn');
     let isSubmitted = false;
     
-    // Hide ticket actions initially
-    const ticketActions = document.querySelector('.ticket-actions');
-    if (ticketActions) {
-        ticketActions.style.display = 'none';
-    }
-    
     const timer = new TicketTimer(
         duration,
         (timeLeft) => {
             if (timerElement) {
                 timerElement.textContent = timer.formatTime(timeLeft);
                 
-                // Change color when time is running low (last 25% of time)
                 if (timeLeft <= duration * 0.25) {
                     timerElement.className = 'timer warning';
                 } else {
@@ -252,7 +245,6 @@ function initializeQuestionPage(duration, priority) {
                     timerElement.className = 'timer warning';
                 }
                 
-                // Disable all options
                 const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
                 currentAnswerOptions.forEach(option => {
                     option.disabled = true;
@@ -263,7 +255,6 @@ function initializeQuestionPage(duration, priority) {
                     submitBtn.textContent = 'Time Expired';
                 }
                 
-                // Show time up message
                 const timeUpDiv = document.createElement('div');
                 timeUpDiv.className = 'time-up';
                 timeUpDiv.textContent = '⏰ Time has expired! Please try again.';
@@ -273,22 +264,19 @@ function initializeQuestionPage(duration, priority) {
                     questionContent.insertBefore(timeUpDiv, answerOptions);
                 }
                 
-                // Show ticket actions after time expires
-                showTicketActions();
+                // Show back to dashboard button
+                showBackToDashboard();
             }
         }
     );
 
-    // Initialize timer display
     if (timerElement) {
         timerElement.textContent = timer.formatTime(duration);
         timerElement.className = 'timer normal';
     }
     
-    // Start the timer
     timer.start();
     
-    // Handle form submission
     const ticketForm = document.getElementById('ticketForm');
     if (ticketForm) {
         ticketForm.addEventListener('submit', (e) => {
@@ -307,10 +295,6 @@ function initializeQuestionPage(duration, priority) {
             
             const selectedIndex = parseInt(selectedAnswer.value);
             
-            console.log('Selected index:', selectedIndex); // Debug log
-            console.log('Current question data:', currentQuestionData); // Debug log
-            
-            // Check if we have the question data
             if (!currentQuestionData) {
                 console.error('No question data available!');
                 alert('Error: Question data not loaded properly.');
@@ -333,46 +317,29 @@ function initializeQuestionPage(duration, priority) {
                 submitBtn.disabled = true;
             }
             
-            // Show ticket actions after answering
-            showTicketActions();
-            
-            // Add back to dashboard button after delay
-            setTimeout(() => {
-                const buttonGroup = document.querySelector('.button-group');
-                if (buttonGroup) {
-                    const backBtn = document.createElement('button');
-                    backBtn.textContent = 'Back to Dashboard';
-                    backBtn.className = 'btn btn-back';
-                    backBtn.onclick = () => location.href = 'index.html';
-                    buttonGroup.appendChild(backBtn);
-                }
-            }, 2000);
+            // Show success popup if correct, or just back button if incorrect
+            if (isCorrect) {
+                setTimeout(() => {
+                    showSuccessPopup();
+                }, 1500); // Show popup after 1.5 seconds to let user see the result
+            } else {
+                setTimeout(() => {
+                    showBackToDashboard();
+                }, 3000); // Show back button after 3 seconds for incorrect answers
+            }
         });
     }
 }
 
-function showTicketActions() {
-    const ticketActions = document.querySelector('.ticket-actions');
-    if (ticketActions) {
-        ticketActions.style.display = 'block';
-        // Add a smooth fade-in effect
-        ticketActions.style.opacity = '0';
-        ticketActions.style.transition = 'opacity 0.5s ease-in';
-        setTimeout(() => {
-            ticketActions.style.opacity = '1';
-        }, 100);
-    }
-}
-
 function showResults(isCorrect, selectedIndex, questionData) {
-    console.log('Showing results - Correct:', isCorrect, 'Selected:', selectedIndex, 'Question:', questionData); // Debug log
+    console.log('Showing results - Correct:', isCorrect, 'Selected:', selectedIndex, 'Question:', questionData);
     
     const resultDiv = document.createElement('div');
     resultDiv.className = `result-message ${isCorrect ? 'correct' : 'incorrect'}`;
     
     if (isCorrect) {
         resultDiv.innerHTML = `
-            <div>🎉 Correct! Well done!</div>
+            <div>🎉 Excellent! You got it right!</div>
             <div class="explanation">
                 <strong>Explanation:</strong> ${questionData.explanation}
             </div>
@@ -402,4 +369,42 @@ function showResults(isCorrect, selectedIndex, questionData) {
     if (questionContent && answerOptions) {
         questionContent.insertBefore(resultDiv, answerOptions.nextSibling);
     }
+}
+
+function showSuccessPopup() {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.style.display = 'block';
+        
+        // Add celebration animation
+        const modalContent = successModal.querySelector('.success-modal-content');
+        if (modalContent) {
+            modalContent.style.animation = 'celebrationBounce 0.6s ease-out';
+        }
+    }
+}
+
+function closeSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.style.display = 'none';
+    }
+    showBackToDashboard();
+}
+
+function showBackToDashboard() {
+    setTimeout(() => {
+        const buttonGroup = document.querySelector('.button-group');
+        if (buttonGroup) {
+            // Check if back button already exists
+            const existingBackBtn = buttonGroup.querySelector('.btn-dashboard');
+            if (!existingBackBtn) {
+                const backBtn = document.createElement('button');
+                backBtn.textContent = 'Back to Dashboard';
+                backBtn.className = 'btn btn-back btn-dashboard';
+                backBtn.onclick = () => location.href = 'index.html';
+                buttonGroup.appendChild(backBtn);
+            }
+        }
+    }, 1000);
 }
