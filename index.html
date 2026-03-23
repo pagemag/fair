@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Ticket System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎫 CRM Ticket System</h1>
+            <p>Select a priority level to answer tickets</p>
+        </header>
+        
+        <div class="ticket-grid">
+            <div class="ticket-card p1">
+                <div class="priority-badge">P1</div>
+                <h3>Critical Priority</h3>
+                <p class="description">System down, security breach</p>
+                <p class="time-limit">⏱️ 30 seconds</p>
+                <button onclick="location.href='p1.html'" class="answer-btn">Answer Ticket</button>
+            </div>
+            
+            <div class="ticket-card p2">
+                <div class="priority-badge">P2</div>
+                <h3>High Priority</h3>
+                <p class="description">Service degradation, major bugs</p>
+                <p class="time-limit">⏱️ 1 minute</p>
+                <button onclick="location.href='p2.html'" class="answer-btn">Answer Ticket</button>
+            </div>
+            
+            <div class="ticket-card p3">
+                <div class="priority-badge">P3</div>
+                <h3>Medium Priority</h3>
+                <p class="description">Minor bugs, feature requests</p>
+                <p class="time-limit">⏱️ 1 minute 30 seconds</p>
+                <button onclick="location.href='p3.html'" class="answer-btn">Answer Ticket</button>
+            </div>
+            
+            <div class="ticket-card p4">
+                <div class="priority-badge">P4</div>
+                <h3>Low Priority</h3>
+                <p class="description">Documentation, minor improvements</p>
+                <p class="time-limit">⏱️ 2 minutes</p>
+                <button onclick="location.href='p4.html'" class="answer-btn">Answer Ticket</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2024 CRM Ticket System - Demo Version</p>
+        </footer>
+    </div>
+</body>
+</html>
