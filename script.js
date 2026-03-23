@@ -1,555 +1,403 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 40px;
-    color: white;
-}
-
-header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
-
-.ticket-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    flex: 1;
-    align-content: start;
-}
-
-.ticket-card {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.ticket-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-}
-
-.priority-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px 20px;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border-bottom-left-radius: 15px;
-}
-
-.p1 .priority-badge {
-    background: #e74c3c;
-}
-
-.p2 .priority-badge {
-    background: #f39c12;
-}
-
-.p3 .priority-badge {
-    background: #3498db;
-}
-
-.p4 .priority-badge {
-    background: #27ae60;
-}
-
-.ticket-card h3 {
-    margin: 20px 0 15px 0;
-    font-size: 1.5rem;
-    color: #2c3e50;
-}
-
-.description {
-    color: #7f8c8d;
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
-.time-limit {
-    color: #e67e22;
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-}
-
-.answer-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.answer-btn:hover {
-    background: linear-gradient(45deg, #764ba2, #667eea);
-    transform: scale(1.05);
-}
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    color: white;
-    opacity: 0.8;
-}
-
-/* Question Page Styles */
-.question-container {
-    background: white;
-    border-radius: 15px;
-    padding: 40px;
-    margin: 20px auto;
-    max-width: 900px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.timer {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-}
-
-.timer.warning {
-    background: #e74c3c;
-    animation: pulse 1s infinite;
-}
-
-.timer.normal {
-    background: #27ae60;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-.question-content h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-.question-text {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    border-left: 5px solid #3498db;
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-/* Radio Button Styles */
-.answer-options {
-    margin-bottom: 30px;
-}
-
-.option {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.option:hover {
-    border-color: #3498db;
-    background: #e3f2fd;
-}
-
-.option input[type="radio"] {
-    margin-right: 15px;
-    transform: scale(1.2);
-}
-
-.option label {
-    cursor: pointer;
-    flex: 1;
-    font-size: 1rem;
-    line-height: 1.4;
-}
-
-.option.correct {
-    border-color: #27ae60;
-    background: #d5f4e6;
-}
-
-.option.incorrect {
-    border-color: #e74c3c;
-    background: #fdeaea;
-}
-
-.result-message {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.result-message.correct {
-    background: #d5f4e6;
-    color: #27ae60;
-    border: 2px solid #27ae60;
-}
-
-.result-message.incorrect {
-    background: #fdeaea;
-    color: #e74c3c;
-    border: 2px solid #e74c3c;
-}
-
-.explanation {
-    background: #e8f4fd;
-    border: 1px solid #3498db;
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
-    font-style: italic;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 15px 30px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-submit {
-    background: #27ae60;
-    color: white;
-}
-
-.btn-submit:hover:not(:disabled) {
-    background: #2ecc71;
-}
-
-.btn-submit:disabled {
-    background: #95a5a6;
-    cursor: not-allowed;
-}
-
-.btn-back {
-    background: #95a5a6;
-    color: white;
-}
-
-.btn-back:hover {
-    background: #7f8c8d;
-}
-
-.time-up {
-    text-align: center;
-    color: #e74c3c;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Success Modal Styles */
-.success-modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.8);
-    animation: fadeIn 0.3s ease-in;
-}
-
-.success-modal-content {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    margin: 10% auto;
-    padding: 40px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    text-align: center;
-    color: white;
-}
-
-.success-header {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-.success-title {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-.success-message {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
-    line-height: 1.5;
-}
-
-.success-actions {
-    margin-top: 30px;
-}
-
-.success-actions h3 {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    color: #fff;
-}
-
-.success-action-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-}
-
-.success-action-btn {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-    min-width: 150px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.success-action-btn.feature {
-    background: linear-gradient(45deg, #2196F3, #1976D2);
-}
-
-.success-action-btn.bug {
-    background: linear-gradient(45deg, #FF5722, #D84315);
-}
-
-.success-action-btn.sre {
-    background: linear-gradient(45deg, #FF9800, #F57C00);
-}
-
-.success-action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
-
-.success-close-btn {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: 2px solid rgba(255,255,255,0.3);
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.success-close-btn:hover {
-    background: rgba(255,255,255,0.3);
-    border-color: rgba(255,255,255,0.5);
-}
-
-/* Regular Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #000;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes celebrationBounce {
-    0% { 
-        transform: scale(0.3) translateY(-100px);
-        opacity: 0;
+class TicketTimer {
+    constructor(duration, onTick, onComplete) {
+        this.duration = duration;
+        this.timeLeft = duration;
+        this.onTick = onTick;
+        this.onComplete = onComplete;
+        this.interval = null;
+        this.isRunning = false;
     }
-    50% { 
-        transform: scale(1.05) translateY(0);
-        opacity: 1;
+
+    start() {
+        if (this.isRunning) return;
+        
+        this.isRunning = true;
+        this.interval = setInterval(() => {
+            this.timeLeft--;
+            this.onTick(this.timeLeft);
+            
+            if (this.timeLeft <= 0) {
+                this.stop();
+                this.onComplete();
+            }
+        }, 1000);
     }
-    70% { 
-        transform: scale(0.95);
+
+    stop() {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+            this.isRunning = false;
+        }
     }
-    100% { 
-        transform: scale(1);
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .ticket-grid {
-        grid-template-columns: 1fr;
+// Questions with multiple choice options and correct answers
+const questions = {
+    p1: [
+        {
+            question: "CRITICAL: The main database server is down and users cannot access the application. What is your FIRST immediate action?",
+            options: [
+                "Check server logs and restart the database service",
+                "Notify all stakeholders via email about the outage",
+                "Switch to backup database server immediately",
+                "Run a full system diagnostic to find the root cause"
+            ],
+            correct: 2,
+            explanation: "In a critical outage, the first priority is restoring service. Switching to backup servers provides immediate relief while investigation continues."
+        },
+        {
+            question: "SECURITY BREACH: Unauthorized access detected in admin panel. What should be your immediate response?",
+            options: [
+                "Change all admin passwords and enable 2FA",
+                "Disconnect affected systems from network immediately",
+                "Document the breach for compliance reporting",
+                "Run antivirus scans on all servers"
+            ],
+            correct: 1,
+            explanation: "In a security breach, immediate isolation prevents further damage. Disconnecting systems stops the attack while you assess the situation."
+        },
+        {
+            question: "CRITICAL: Payment processing system failing, no transactions possible. What's the priority action?",
+            options: [
+                "Contact payment gateway support",
+                "Activate backup payment processor",
+                "Notify customers about payment issues",
+                "Review recent code deployments"
+            ],
+            correct: 1,
+            explanation: "Business continuity is critical. Activating backup payment systems ensures revenue flow continues while the primary issue is resolved."
+        }
+    ],
+    p2: [
+        {
+            question: "HIGH PRIORITY: Website loading extremely slowly (30+ seconds). What should you investigate first?",
+            options: [
+                "Check database query performance",
+                "Review server CPU and memory usage",
+                "Analyze network connectivity issues",
+                "Examine recent code deployments"
+            ],
+            correct: 1,
+            explanation: "Server resource utilization is often the primary cause of slow performance and should be checked first for quick wins."
+        },
+        {
+            question: "MAJOR BUG: Users can't upload files >1MB, but system should support 10MB. Best approach?",
+            options: [
+                "Increase server memory allocation",
+                "Check web server upload limits configuration",
+                "Optimize file compression algorithms",
+                "Implement file chunking for large uploads"
+            ],
+            correct: 1,
+            explanation: "File upload size limits are typically configured at the web server level (nginx, Apache) and should be checked first."
+        },
+        {
+            question: "HIGH PRIORITY: Email notifications stopped working 2 hours ago. First troubleshooting step?",
+            options: [
+                "Check email service logs for errors",
+                "Restart the email service",
+                "Verify SMTP server connectivity",
+                "Review email queue status"
+            ],
+            correct: 0,
+            explanation: "Logs provide the most information about what went wrong and when, making them the best starting point for diagnosis."
+        }
+    ],
+    p3: [
+        {
+            question: "MEDIUM PRIORITY: Search function returns irrelevant results occasionally. How would you investigate?",
+            options: [
+                "Rebuild the search index completely",
+                "Analyze search query patterns and results",
+                "Increase search server resources",
+                "Update search algorithm parameters"
+            ],
+            correct: 1,
+            explanation: "Understanding the pattern of when irrelevant results occur helps identify the root cause before making changes."
+        },
+        {
+            question: "FEATURE REQUEST: Customers want dark mode. What's the best implementation approach?",
+            options: [
+                "Create separate dark theme CSS files",
+                "Use CSS variables for dynamic theming",
+                "Implement theme switching with JavaScript",
+                "Redesign the entire UI for dark mode"
+            ],
+            correct: 1,
+            explanation: "CSS variables provide the most maintainable and efficient way to implement theme switching."
+        },
+        {
+            question: "MEDIUM PRIORITY: Mobile app crashes on certain Android devices when accessing profile page. Best debugging approach?",
+            options: [
+                "Test on all Android device models",
+                "Check crash logs for specific error patterns",
+                "Rewrite the profile page component",
+                "Update the mobile app framework"
+            ],
+            correct: 1,
+            explanation: "Crash logs will show the specific error and stack trace, helping identify the exact cause and affected device characteristics."
+        }
+    ],
+    p4: [
+        {
+            question: "LOW PRIORITY: Users want better tooltips throughout the application. Best approach?",
+            options: [
+                "Add tooltips to every UI element",
+                "Conduct user research to identify key areas needing help",
+                "Copy tooltip patterns from competitors",
+                "Implement tooltips using a third-party library"
+            ],
+            correct: 1,
+            explanation: "User research ensures tooltips are added where they're actually needed, improving UX without cluttering the interface."
+        },
+        {
+            question: "DOCUMENTATION: API documentation is outdated. How would you organize the update?",
+            options: [
+                "Rewrite all documentation from scratch",
+                "Set up automated documentation generation",
+                "Assign documentation tasks to developers",
+                "Hire a technical writer"
+            ],
+            correct: 1,
+            explanation: "Automated documentation generation from code ensures documentation stays current with minimal manual effort."
+        },
+        {
+            question: "MINOR IMPROVEMENT: Loading animations need modernization. Best approach?",
+            options: [
+                "Use CSS animations instead of GIFs",
+                "Research current animation trends and user preferences",
+                "Implement complex 3D animations",
+                "Remove loading animations entirely"
+            ],
+            correct: 1,
+            explanation: "Research ensures the new animations align with user expectations and current design trends for better UX."
+        }
+    ]
+};
+
+// Global variable to store current question
+let currentQuestionData = null;
+
+function getRandomQuestion(priority) {
+    const priorityQuestions = questions[priority];
+    return priorityQuestions[Math.floor(Math.random() * priorityQuestions.length)];
+}
+
+function loadQuestion(priority) {
+    // Get random question and store it globally
+    currentQuestionData = getRandomQuestion(priority);
+    
+    // Set question text
+    const questionTextElement = document.getElementById('questionText');
+    if (questionTextElement) {
+        questionTextElement.textContent = currentQuestionData.question;
     }
     
-    header h1 {
-        font-size: 2rem;
+    // Create answer options
+    const optionsContainer = document.getElementById('answerOptions');
+    if (optionsContainer) {
+        optionsContainer.innerHTML = '';
+        
+        currentQuestionData.options.forEach((option, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.innerHTML = `
+                <input type="radio" id="option${index}" name="answer" value="${index}">
+                <label for="option${index}">${option}</label>
+            `;
+            optionsContainer.appendChild(optionDiv);
+        });
     }
     
-    .question-container {
-        margin: 10px;
-        padding: 20px;
+    console.log('Question loaded:', currentQuestionData);
+}
+
+function initializeQuestionPage(duration, priority) {
+    const timerElement = document.getElementById('timer');
+    const submitBtn = document.getElementById('submitBtn');
+    let isSubmitted = false;
+    
+    const timer = new TicketTimer(
+        duration,
+        (timeLeft) => {
+            if (timerElement) {
+                timerElement.textContent = timer.formatTime(timeLeft);
+                
+                if (timeLeft <= duration * 0.25) {
+                    timerElement.className = 'timer warning';
+                } else {
+                    timerElement.className = 'timer normal';
+                }
+            }
+        },
+        () => {
+            // Time's up
+            if (!isSubmitted) {
+                if (timerElement) {
+                    timerElement.textContent = "Time's Up!";
+                    timerElement.className = 'timer warning';
+                }
+                
+                const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
+                currentAnswerOptions.forEach(option => {
+                    option.disabled = true;
+                });
+                
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Time Expired';
+                }
+                
+                const timeUpDiv = document.createElement('div');
+                timeUpDiv.className = 'time-up';
+                timeUpDiv.textContent = '⏰ Time has expired! Please try again.';
+                const questionContent = document.querySelector('.question-content');
+                const answerOptions = document.querySelector('.answer-options');
+                if (questionContent && answerOptions) {
+                    questionContent.insertBefore(timeUpDiv, answerOptions);
+                }
+                
+                // Show back to dashboard button
+                showBackToDashboard();
+            }
+        }
+    );
+
+    if (timerElement) {
+        timerElement.textContent = timer.formatTime(duration);
+        timerElement.className = 'timer normal';
     }
     
-    .button-group {
-        flex-direction: column;
-    }
+    timer.start();
     
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 20px;
-    }
-    
-    .success-modal-content {
-        margin: 5% auto;
-        padding: 30px 20px;
-        width: 95%;
-    }
-    
-    .success-header {
-        font-size: 2rem;
-    }
-    
-    .success-title {
-        font-size: 1.5rem;
-    }
-    
-    .success-action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .success-action-btn {
-        width: 100%;
-        max-width: 250px;
+    const ticketForm = document.getElementById('ticketForm');
+    if (ticketForm) {
+        ticketForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (isSubmitted) return;
+            
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            isSubmitted = true;
+            timer.stop();
+            
+            const selectedIndex = parseInt(selectedAnswer.value);
+            
+            if (!currentQuestionData) {
+                console.error('No question data available!');
+                alert('Error: Question data not loaded properly.');
+                return;
+            }
+            
+            const isCorrect = selectedIndex === currentQuestionData.correct;
+            
+            // Show results
+            showResults(isCorrect, selectedIndex, currentQuestionData);
+            
+            // Disable further interaction
+            const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
+            currentAnswerOptions.forEach(option => {
+                option.disabled = true;
+            });
+            
+            if (submitBtn) {
+                submitBtn.textContent = 'Answer Submitted';
+                submitBtn.disabled = true;
+            }
+            
+            // Show success popup if correct, or just back button if incorrect
+            if (isCorrect) {
+                setTimeout(() => {
+                    showSuccessPopup();
+                }, 1500); // Show popup after 1.5 seconds to let user see the result
+            } else {
+                setTimeout(() => {
+                    showBackToDashboard();
+                }, 3000); // Show back button after 3 seconds for incorrect answers
+            }
+        });
     }
 }
+
+function showResults(isCorrect, selectedIndex, questionData) {
+    console.log('Showing results - Correct:', isCorrect, 'Selected:', selectedIndex, 'Question:', questionData);
+    
+    const resultDiv = document.createElement('div');
+    resultDiv.className = `result-message ${isCorrect ? 'correct' : 'incorrect'}`;
+    
+    if (isCorrect) {
+        resultDiv.innerHTML = `
+            <div>🎉 Excellent! You got it right!</div>
+            <div class="explanation">
+                <strong>Explanation:</strong> ${questionData.explanation}
+            </div>
+        `;
+    } else {
+        resultDiv.innerHTML = `
+            <div>❌ Incorrect. The correct answer was: "${questionData.options[questionData.correct]}"</div>
+            <div class="explanation">
+                <strong>Explanation:</strong> ${questionData.explanation}
+            </div>
+        `;
+    }
+    
+    // Highlight correct and incorrect options
+    const options = document.querySelectorAll('.option');
+    options.forEach((option, index) => {
+        if (index === questionData.correct) {
+            option.classList.add('correct');
+        } else if (index === selectedIndex && !isCorrect) {
+            option.classList.add('incorrect');
+        }
+    });
+    
+    // Insert result message
+    const questionContent = document.querySelector('.question-content');
+    const answerOptions = document.querySelector('.answer-options');
+    if (questionContent && answerOptions) {
+        questionContent.insertBefore(resultDiv, answerOptions.nextSibling);
+    }
+}
+
+function showSuccessPopup() {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.style.display = 'block';
+        
+        // Add celebration animation
+        const modalContent = successModal.querySelector('.success-modal-content');
+        if (modalContent) {
+            modalContent.style.animation = 'celebrationBounce 0.6s ease-out';
+        }
+    }
+}
+
+function closeSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.style.display = 'none';
+    }
+    showBackToDashboard();
+}
+
+function showBackToDashboard() {
+    setTimeout(() => {
+        const buttonGroup = document.querySelector('.button-group');
+        if (buttonGroup) {
+            // Check if back button already exists
+            const existingBackBtn = buttonGroup.querySelector('.btn-dashboard');
+            if (!existingBackBtn) {
+                const backBtn = document.createElement('button');
+                backBtn.textContent = 'Back to Dashboard';
