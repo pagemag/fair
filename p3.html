@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3 Medium Priority Ticket - CRM System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="question-container">
+            <div id="timer" class="timer">1:30</div>
+            
+            <div class="question-content">
+                <h2>📋 P3 - Medium Priority Ticket</h2>
+                <div class="question-text" id="questionText">
+                    MEDIUM PRIORITY: Some users report that the search function occasionally returns irrelevant results. How would you investigate and resolve this issue?
+                </div>
+                
+                <form id="ticketForm">
+                    <div class="answer-area">
+                        <label for="answer"><strong>Your Response:</strong></label>
+                        <textarea id="answer" placeholder="Explain your approach to resolving this medium priority issue..." required></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" id="submitBtn" class="btn btn-submit">Submit Answer</button>
+                        <button type="button" onclick="location.href='index.html'" class="btn btn-back">Back to Dashboard</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('questionText').textContent = getRandomQuestion('p3');
+        initializeQuestionPage(90, 'P3');
+    </script>
+</body>
+</html>
