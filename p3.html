@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P3 Medium Priority Ticket - CRM System</title>
+    <title>P3 Medium Priority Ticket - Ticket Challenge</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,14 +13,30 @@
             
             <div class="question-content">
                 <h2>📋 P3 - Medium Priority Ticket</h2>
+                
+                <!-- Ticket Actions Section -->
+                <div class="ticket-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button onclick="openTicketModal('feature')" class="action-btn feature">
+                            🚀 Feature Request
+                        </button>
+                        <button onclick="openTicketModal('bug')" class="action-btn bug">
+                            🐛 Bug Report
+                        </button>
+                        <button onclick="openTicketModal('sre')" class="action-btn sre">
+                            ⚙️ SRE Ticket
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="question-text" id="questionText">
-                    MEDIUM PRIORITY: Some users report that the search function occasionally returns irrelevant results. How would you investigate and resolve this issue?
+                    Loading question...
                 </div>
                 
                 <form id="ticketForm">
-                    <div class="answer-area">
-                        <label for="answer"><strong>Your Response:</strong></label>
-                        <textarea id="answer" placeholder="Explain your approach to resolving this medium priority issue..." required></textarea>
+                    <div class="answer-options" id="answerOptions">
+                        <!-- Options will be loaded dynamically -->
                     </div>
                     
                     <div class="button-group">
@@ -32,10 +48,88 @@
         </div>
     </div>
 
+    <!-- Modal for ticket creation -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTicketModal()">&times;</span>
+            <h2 id="modalTitle">Create Ticket</h2>
+            <form id="ticketCreationForm">
+                <div class="form-group">
+                    <label for="ticketTitle">Title:</label>
+                    <input type="text" id="ticketTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="ticketDescription">Description:</label>
+                    <textarea id="ticketDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ticketPriority">Priority:</label>
+                    <select id="ticketPriority" required>
+                        <option value="">Select Priority</option>
+                        <option value="P1">P1 - Critical</option>
+                        <option value="P2">P2 - High</option>
+                        <option value="P3">P3 - Medium</option>
+                        <option value="P4">P4 - Low</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn btn-submit">Create Ticket</button>
+                    <button type="button" onclick="closeTicketModal()" class="btn btn-back">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
-        document.getElementById('questionText').textContent = getRandomQuestion('p3');
+        // Load question and initialize timer
+        loadQuestion('p3');
         initializeQuestionPage(90, 'P3');
+
+        // Modal functions
+        function openTicketModal(type) {
+            const modal = document.getElementById('ticketModal');
+            const title = document.getElementById('modalTitle');
+            
+            const titles = {
+                feature: '🚀 Create Feature Request',
+                bug: '🐛 Report Bug',
+                sre: '⚙️ Create SRE Ticket'
+            };
+            
+            title.textContent = titles[type];
+            modal.style.display = 'block';
+            
+            document.getElementById('ticketCreationForm').dataset.ticketType = type;
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').style.display = 'none';
+            document.getElementById('ticketCreationForm').reset();
+        }
+
+        document.getElementById('ticketCreationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const type = this.dataset.ticketType;
+            const title = document.getElementById('ticketTitle').value;
+            const description = document.getElementById('ticketDescription').value;
+            const priority = document.getElementById('ticketPriority').value;
+            
+            alert(`${type.toUpperCase()} ticket created successfully!
+
+Title: ${title}
+Priority: ${priority}
+Description: ${description}`);
+            closeTicketModal();
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('ticketModal');
+            if (event.target == modal) {
+                closeTicketModal();
+            }
+        }
     </script>
 </body>
 </html>
