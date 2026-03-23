@@ -28,27 +28,40 @@
                         <button type="button" onclick="location.href='index.html'" class="btn btn-back">Back to Dashboard</button>
                     </div>
                 </form>
-                
-                <!-- Ticket Actions Section - Hidden initially -->
-                <div class="ticket-actions" style="display: none;">
-                    <h3>🎯 Great job! Now you can create additional tickets:</h3>
-                    <div class="action-buttons">
-                        <button onclick="openTicketModal('feature')" class="action-btn feature">
-                            🚀 Feature Request
-                        </button>
-                        <button onclick="openTicketModal('bug')" class="action-btn bug">
-                            🐛 Bug Report
-                        </button>
-                        <button onclick="openTicketModal('sre')" class="action-btn sre">
-                            ⚙️ SRE Ticket
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for ticket creation -->
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-modal-content">
+            <div class="success-header">🎉</div>
+            <div class="success-title">Congratulations!</div>
+            <div class="success-message">
+                You've successfully resolved this ticket! Your quick thinking and expertise make you a valuable team member.
+            </div>
+            
+            <div class="success-actions">
+                <h3>What would you like to do next?</h3>
+                <div class="success-action-buttons">
+                    <button onclick="openTicketModal('feature')" class="success-action-btn feature">
+                        🚀 Feature Request
+                    </button>
+                    <button onclick="openTicketModal('bug')" class="success-action-btn bug">
+                        🐛 Bug Report
+                    </button>
+                    <button onclick="openTicketModal('sre')" class="success-action-btn sre">
+                        ⚙️ SRE Ticket
+                    </button>
+                </div>
+                <button onclick="closeSuccessModal()" class="success-close-btn">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regular Modal for ticket creation -->
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeTicketModal()">&times;</span>
@@ -84,13 +97,18 @@
     <script>
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Load question first, then initialize timer
             loadQuestion('p1');
             initializeQuestionPage(30, 'P1');
         });
 
         // Modal functions
         function openTicketModal(type) {
+            // Close success modal first
+            const successModal = document.getElementById('successModal');
+            if (successModal) {
+                successModal.style.display = 'none';
+            }
+            
             const modal = document.getElementById('ticketModal');
             const title = document.getElementById('modalTitle');
             
@@ -103,7 +121,6 @@
             title.textContent = titles[type];
             modal.style.display = 'block';
             
-            // Store ticket type for form submission
             document.getElementById('ticketCreationForm').dataset.ticketType = type;
         }
 
@@ -121,7 +138,6 @@
             const description = document.getElementById('ticketDescription').value;
             const priority = document.getElementById('ticketPriority').value;
             
-            // Show success message with ticket details
             const ticketId = 'TKT-' + Date.now().toString().slice(-6);
             alert(`✅ ${type.toUpperCase()} ticket created successfully!
 
@@ -137,13 +153,21 @@
 ` +
                   `Your ticket has been submitted to the appropriate team.`);
             closeTicketModal();
+            
+            // Show back to dashboard after creating ticket
+            showBackToDashboard();
         });
 
         // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('ticketModal');
+            const successModal = document.getElementById('successModal');
+            
             if (event.target == modal) {
                 closeTicketModal();
+            }
+            if (event.target == successModal) {
+                closeSuccessModal();
             }
         }
     </script>
