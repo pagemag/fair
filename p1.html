@@ -82,9 +82,12 @@
 
     <script src="script.js"></script>
     <script>
-        // Load question and initialize timer
-        loadQuestion('p1');
-        initializeQuestionPage(30, 'P1');
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load question first, then initialize timer
+            loadQuestion('p1');
+            initializeQuestionPage(30, 'P1');
+        });
 
         // Modal functions
         function openTicketModal(type) {
@@ -120,11 +123,18 @@
             
             // Show success message with ticket details
             const ticketId = 'TKT-' + Date.now().toString().slice(-6);
-            alert(`✅ ${type.toUpperCase()} ticket created successfully!\n\n` +
-                  `Ticket ID: ${ticketId}\n` +
-                  `Title: ${title}\n` +
-                  `Priority: ${priority}\n` +
-                  `Description: ${description}\n\n` +
+            alert(`✅ ${type.toUpperCase()} ticket created successfully!
+
+` +
+                  `Ticket ID: ${ticketId}
+` +
+                  `Title: ${title}
+` +
+                  `Priority: ${priority}
+` +
+                  `Description: ${description}
+
+` +
                   `Your ticket has been submitted to the appropriate team.`);
             closeTicketModal();
         });
