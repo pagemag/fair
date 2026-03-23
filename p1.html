@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P1 Critical Ticket - CRM System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="question-container">
+            <div id="timer" class="timer">0:30</div>
+            
+            <div class="question-content">
+                <h2>🚨 P1 - Critical Priority Ticket</h2>
+                <div class="question-text" id="questionText">
+                    CRITICAL: The main database server is down and users cannot access the application. Customers are reporting complete service outage. What immediate steps would you take to restore service?
+                </div>
+                
+                <form id="ticketForm">
+                    <div class="answer-area">
+                        <label for="answer"><strong>Your Response:</strong></label>
+                        <textarea id="answer" placeholder="Provide your immediate action plan to resolve this critical issue..." required></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" id="submitBtn" class="btn btn-submit">Submit Answer</button>
+                        <button type="button" onclick="location.href='index.html'" class="btn btn-back">Back to Dashboard</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Set random question and initialize timer
+        document.getElementById('questionText').textContent = getRandomQuestion('p1');
+        initializeQuestionPage(30, 'P1');
+    </script>
+</body>
+</html>
