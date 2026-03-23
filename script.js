@@ -182,15 +182,46 @@ const questions = {
     ]
 };
 
+// Global variable to store current question
+let currentQuestionData = null;
+
 function getRandomQuestion(priority) {
     const priorityQuestions = questions[priority];
     return priorityQuestions[Math.floor(Math.random() * priorityQuestions.length)];
 }
 
+function loadQuestion(priority) {
+    // Get random question and store it globally
+    currentQuestionData = getRandomQuestion(priority);
+    
+    // Set question text
+    const questionTextElement = document.getElementById('questionText');
+    if (questionTextElement) {
+        questionTextElement.textContent = currentQuestionData.question;
+    }
+    
+    // Create answer options
+    const optionsContainer = document.getElementById('answerOptions');
+    if (optionsContainer) {
+        optionsContainer.innerHTML = '';
+        
+        currentQuestionData.options.forEach((option, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.innerHTML = `
+                <input type="radio" id="option${index}" name="answer" value="${index}">
+                <label for="option${index}">${option}</label>
+            `;
+            optionsContainer.appendChild(optionDiv);
+        });
+    }
+    
+    console.log('Question loaded:', currentQuestionData); // Debug log
+}
+
 function initializeQuestionPage(duration, priority) {
     const timerElement = document.getElementById('timer');
     const submitBtn = document.getElementById('submitBtn');
-    const answerOptions = document.querySelectorAll('input[name="answer"]');
     let isSubmitted = false;
     
     // Hide ticket actions initially
@@ -202,20 +233,24 @@ function initializeQuestionPage(duration, priority) {
     const timer = new TicketTimer(
         duration,
         (timeLeft) => {
-            timerElement.textContent = timer.formatTime(timeLeft);
-            
-            // Change color when time is running low (last 25% of time)
-            if (timeLeft <= duration * 0.25) {
-                timerElement.className = 'timer warning';
-            } else {
-                timerElement.className = 'timer normal';
+            if (timerElement) {
+                timerElement.textContent = timer.formatTime(timeLeft);
+                
+                // Change color when time is running low (last 25% of time)
+                if (timeLeft <= duration * 0.25) {
+                    timerElement.className = 'timer warning';
+                } else {
+                    timerElement.className = 'timer normal';
+                }
             }
         },
         () => {
             // Time's up
             if (!isSubmitted) {
-                timerElement.textContent = "Time's Up!";
-                timerElement.className = 'timer warning';
+                if (timerElement) {
+                    timerElement.textContent = "Time's Up!";
+                    timerElement.className = 'timer warning';
+                }
                 
                 // Disable all options
                 const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
@@ -223,14 +258,20 @@ function initializeQuestionPage(duration, priority) {
                     option.disabled = true;
                 });
                 
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Time Expired';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Time Expired';
+                }
                 
                 // Show time up message
                 const timeUpDiv = document.createElement('div');
                 timeUpDiv.className = 'time-up';
                 timeUpDiv.textContent = '⏰ Time has expired! Please try again.';
-                document.querySelector('.question-content').insertBefore(timeUpDiv, document.querySelector('.answer-options'));
+                const questionContent = document.querySelector('.question-content');
+                const answerOptions = document.querySelector('.answer-options');
+                if (questionContent && answerOptions) {
+                    questionContent.insertBefore(timeUpDiv, answerOptions);
+                }
                 
                 // Show ticket actions after time expires
                 showTicketActions();
@@ -239,55 +280,75 @@ function initializeQuestionPage(duration, priority) {
     );
 
     // Initialize timer display
-    timerElement.textContent = timer.formatTime(duration);
-    timerElement.className = 'timer normal';
+    if (timerElement) {
+        timerElement.textContent = timer.formatTime(duration);
+        timerElement.className = 'timer normal';
+    }
     
     // Start the timer
     timer.start();
     
     // Handle form submission
-    document.getElementById('ticketForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (isSubmitted) return;
-        
-        const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-        if (!selectedAnswer) {
-            alert('Please select an answer before submitting.');
-            return;
-        }
-        
-        isSubmitted = true;
-        timer.stop();
-        
-        const selectedIndex = parseInt(selectedAnswer.value);
-        const currentQuestion = window.currentQuestion;
-        const isCorrect = selectedIndex === currentQuestion.correct;
-        
-        // Show results
-        showResults(isCorrect, selectedIndex, currentQuestion);
-        
-        // Disable further interaction
-        const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
-        currentAnswerOptions.forEach(option => {
-            option.disabled = true;
+    const ticketForm = document.getElementById('ticketForm');
+    if (ticketForm) {
+        ticketForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (isSubmitted) return;
+            
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            isSubmitted = true;
+            timer.stop();
+            
+            const selectedIndex = parseInt(selectedAnswer.value);
+            
+            console.log('Selected index:', selectedIndex); // Debug log
+            console.log('Current question data:', currentQuestionData); // Debug log
+            
+            // Check if we have the question data
+            if (!currentQuestionData) {
+                console.error('No question data available!');
+                alert('Error: Question data not loaded properly.');
+                return;
+            }
+            
+            const isCorrect = selectedIndex === currentQuestionData.correct;
+            
+            // Show results
+            showResults(isCorrect, selectedIndex, currentQuestionData);
+            
+            // Disable further interaction
+            const currentAnswerOptions = document.querySelectorAll('input[name="answer"]');
+            currentAnswerOptions.forEach(option => {
+                option.disabled = true;
+            });
+            
+            if (submitBtn) {
+                submitBtn.textContent = 'Answer Submitted';
+                submitBtn.disabled = true;
+            }
+            
+            // Show ticket actions after answering
+            showTicketActions();
+            
+            // Add back to dashboard button after delay
+            setTimeout(() => {
+                const buttonGroup = document.querySelector('.button-group');
+                if (buttonGroup) {
+                    const backBtn = document.createElement('button');
+                    backBtn.textContent = 'Back to Dashboard';
+                    backBtn.className = 'btn btn-back';
+                    backBtn.onclick = () => location.href = 'index.html';
+                    buttonGroup.appendChild(backBtn);
+                }
+            }, 2000);
         });
-        
-        submitBtn.textContent = 'Answer Submitted';
-        submitBtn.disabled = true;
-        
-        // Show ticket actions after answering
-        showTicketActions();
-        
-        // Add back to dashboard button after delay
-        setTimeout(() => {
-            const backBtn = document.createElement('button');
-            backBtn.textContent = 'Back to Dashboard';
-            backBtn.className = 'btn btn-back';
-            backBtn.onclick = () => location.href = 'index.html';
-            document.querySelector('.button-group').appendChild(backBtn);
-        }, 2000);
-    });
+    }
 }
 
 function showTicketActions() {
@@ -304,6 +365,8 @@ function showTicketActions() {
 }
 
 function showResults(isCorrect, selectedIndex, questionData) {
+    console.log('Showing results - Correct:', isCorrect, 'Selected:', selectedIndex, 'Question:', questionData); // Debug log
+    
     const resultDiv = document.createElement('div');
     resultDiv.className = `result-message ${isCorrect ? 'correct' : 'incorrect'}`;
     
@@ -336,27 +399,7 @@ function showResults(isCorrect, selectedIndex, questionData) {
     // Insert result message
     const questionContent = document.querySelector('.question-content');
     const answerOptions = document.querySelector('.answer-options');
-    questionContent.insertBefore(resultDiv, answerOptions.nextSibling);
-}
-
-function loadQuestion(priority) {
-    const questionData = getRandomQuestion(priority);
-    window.currentQuestion = questionData;
-    
-    // Set question text
-    document.getElementById('questionText').textContent = questionData.question;
-    
-    // Create answer options
-    const optionsContainer = document.getElementById('answerOptions');
-    optionsContainer.innerHTML = '';
-    
-    questionData.options.forEach((option, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'option';
-        optionDiv.innerHTML = `
-            <input type="radio" id="option${index}" name="answer" value="${index}">
-            <label for="option${index}">${option}</label>
-        `;
-        optionsContainer.appendChild(optionDiv);
-    });
+    if (questionContent && answerOptions) {
+        questionContent.insertBefore(resultDiv, answerOptions.nextSibling);
+    }
 }
